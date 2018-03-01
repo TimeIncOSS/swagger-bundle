@@ -1,22 +1,28 @@
 <?php
 
+namespace TimeInc\SwaggerBundle\Tests;
+
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use TimeInc\SwaggerBundle\SwaggerBundle;
+use TimeInc\SwaggerBundle\Tests\fixtures\TestApp\OverrideTestBundle\OverrideTestBundle;
+use TimeInc\SwaggerBundle\Tests\fixtures\TestApp\TestBundle\TestBundle;
 
 class AppKernel extends Kernel
 {
     public function registerBundles()
     {
         $bundles = array();
-        $bundles[] = new TimeInc\SwaggerBundle\Tests\fixtures\TestApp\TestBundle\TestBundle();
+        $bundles[] = new TestBundle();
 
         if ($this->getEnvironment() == 'test_annotation_override') {
-            $bundles[] = new TimeInc\SwaggerBundle\Tests\fixtures\TestApp\OverrideTestBundle\OverrideTestBundle();
+            $bundles[] = new OverrideTestBundle();
         }
 
         if (in_array($this->getEnvironment(), array('test', 'test_annotation_override'))) {
-            $bundles[] = new Symfony\Bundle\FrameworkBundle\FrameworkBundle();
-            $bundles[] = new TimeInc\SwaggerBundle\SwaggerBundle();
+            $bundles[] = new FrameworkBundle();
+            $bundles[] = new SwaggerBundle();
         }
 
         return $bundles;
@@ -43,10 +49,10 @@ class AppKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        if (file_exists(__DIR__.'/config/config_'.$this->getEnvironment().'.yml')) {
-            $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+        if (file_exists($this->rootDir.'/../config/config_'.$this->getEnvironment().'.yml')) {
+            $loader->load($this->rootDir.'/../config/config_'.$this->getEnvironment().'.yml');
         } else {
-            $loader->load(__DIR__.'/config/config.yml');
+            $loader->load($this->rootDir.'/../config/config.yml');
         }
     }
 }

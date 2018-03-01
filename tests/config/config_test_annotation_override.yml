@@ -6,15 +6,13 @@ framework:
     profiler:
         collect: false
     router:
-        resource: "%kernel.root_dir%/config/routing.yml"
+        resource: "%kernel.root_dir%/../config/routing.yml"
         strict_requirements: ~
 
 swagger:
     version: '2.0'      # Swagger version
     host: 'testhost'
     base_path: '/base'
-    alternative_hosts:
-        - { name: 'production', host: 'productionhost', schemes: [https], base_path: '/api' }
     info:
         title: 'My API' # Required
         version: '1.0'  # Required
@@ -30,6 +28,5 @@ swagger:
         - https
     annotations:
         bundles:
-            - TestBundle
-        paths:
-            - '%kernel.root_dir%/../src/fixtures/TestApp/Component'
+            - OverrideTestBundle
+        paths: []
